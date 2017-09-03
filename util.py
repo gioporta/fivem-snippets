@@ -1,3 +1,5 @@
+import os
+
 def format_args(arguments):
     formatted_args = ""
 
@@ -27,12 +29,20 @@ def read_file(file_name):
         raise
 
 def write_file(pretty_name, file_name, content, binary):
+    file_name_joined = os.path.join(*file_name)
+    dir_name = os.path.dirname(file_name_joined)
+
+    print("Writing {0} to {1}!".format(pretty_name, file_name_joined))
+
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+
+    if binary:
+        output_file = open(file_name_joined, 'wb')
+    else:
+        output_file = open(file_name_joined, 'w')
+    
     try:
-        print("Writing {0} to {1}!".format(pretty_name, file_name))
-        if binary:
-            output_file = open(file_name, 'wb')
-        else:
-            output_file = open(file_name, 'w')
         output_file.write(content)
     finally:
         output_file.close()
