@@ -7,7 +7,7 @@ Currently supports the following editors:
 - Atom
 - Notepad++
 
-See the release topic on the FiveM forums for downloads and more details.
+See the [release topic on the FiveM forums](https://forum.fivem.net/t/release-fivem-natives-snippets-completions-for-sublime-text-vs-code-atom-notepad/43776) for downloads and more details.
 
 ## Script Usage
 1. Install Python 3 and Git if you do not already have them.
