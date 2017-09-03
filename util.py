@@ -33,3 +33,6 @@ def write_file(pretty_name, file_name, content):
         output_file.write(content)
     finally:
         output_file.close()
+
+def citizenify(name):
+    return "Citizen." + name

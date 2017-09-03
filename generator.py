@@ -11,7 +11,7 @@ import vscode
 import sublime
 import atom
 import time
-from util import read_file, write_file
+from util import read_file, write_file, citizenify
 
 start_time = time.time()
 
@@ -36,6 +36,7 @@ function_regex = re.compile(r'''
     ''', re.VERBOSE | re.MULTILINE)
 
 list_functions = {}
+citizen_globals = ("Wait", "CreateThread", "SetTimeout")
 
 for file_name, file_content in file_contents.items():
     print("Reading functions from {0}".format(file_name,))
@@ -64,13 +65,15 @@ for function_name in list_functions:
     function_type = list_functions[function_name]["type"]
     function_args = list_functions[function_name]["args"]
 
-    vscode.add_snippet(function_name, function_args)
-    atom.add_snippet(function_name, function_args)
-    sublime.add_completion(function_name, function_args)
+    if function_type == "Global" or function_type == "Default" or function_name in citizen_globals:
+        vscode.add_snippet(function_name, function_args)
+        atom.add_snippet(function_name, function_args)
+        sublime.add_completion(function_name, function_args)
 
     if function_type == "Citizen":
-        vscode.add_snippet("Citizen." + function_name, function_args)
-        sublime.add_completion("Citizen." + function_name, function_args)
+        vscode.add_snippet(citizenify(function_name), function_args)
+        atom.add_snippet(citizenify(function_name), function_args)
+        sublime.add_completion(citizenify(function_name), function_args)
 
 # Write the completed snippets & completions to respective files
 write_file("VS Code snippets", "output/vscode_output.json", vscode.gen_file())
