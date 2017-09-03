@@ -9,21 +9,24 @@ import os
 
 # Get the file name from the first argument
 try:
-    file_name = sys.argv[1]
+    functions_file_name = sys.argv[1]
 except IndexError:
-    print("Please pass the file name as an argument")
+    print("Please pass the function file name as an argument")
     sys.exit()
 
 # Open the given file
 try:
-    file_data = open(file_name, 'r')
+    functions_file = open(functions_file_name, 'r')
 except FileNotFoundError:
-    print("The file {0} does not exist!".format(file_name))
+    print("The file {0} does not exist!".format(functions_file_name))
     sys.exit()
 
 # Read the file into a string
-print("Reading functions from {0}".format(file_name))
-file_content = file_data.read()
+print("Reading functions from {0}".format(functions_file_name))
+functions_file_content = functions_file.read()
+
+# Close the file after reading
+functions_file.close()
 
 # Regular expression matching for Lua function definitions
 function_regex = re.compile(r'''
@@ -32,7 +35,7 @@ function_regex = re.compile(r'''
     \.(\w+)                      # name of function
     \(((?:\w+)(?:,\s*\w+)*)?\)   # function arguments
     ''', re.VERBOSE)
-matches = function_regex.findall(file_content)
+matches = function_regex.findall(functions_file_content)
 
 list_functions = {}
 
