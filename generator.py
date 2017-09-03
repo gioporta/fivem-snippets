@@ -2,9 +2,11 @@
 Converts a FiveM lua reference file to VSCode snippets for autocompletion.
 """
 import re
+import json
+import vscode
 
 DATA = \
-'''
+    '''
 function Global.ThisIsAnExample(arg1, arg2)
     return nil
 end
@@ -31,25 +33,6 @@ FUNCTION_REGEX = re.compile(r'''
 
 MATCHES = FUNCTION_REGEX.findall(DATA)
 
-print(MATCHES)
-
-for function in MATCHES:
-    print("Function: " + function[1])
-
-    if function[2]:
-        print("Args: " + function[2])
-        args = function[2].replace(" ", "").split(",")
-        num = 0
-
-        for arg in args:
-            num += 1
-            print("Argument #" + str(num) + ": " + arg)
-
-    else:
-        print("No arguments!")
-
-    print("")
-
 list_functions = {}
 
 for function in MATCHES:
@@ -65,4 +48,13 @@ for function in MATCHES:
             "args": tuple(function_args)
         }
 
-print(list_functions)
+for function_name in list_functions:
+    function_type = list_functions[function_name]["type"]
+    function_args = list_functions[function_name]["args"]
+
+    vscode.add_snippet(function_name, function_args)
+
+    if function_type == "Citizen":
+        vscode.add_snippet("Citizen." + function_name, function_args)
+
+print(json.dumps(vscode.snippets, indent=2))
