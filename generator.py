@@ -25,6 +25,7 @@ except FileNotFoundError:
 print("Reading functions from {0}".format(file_name))
 file_content = file_data.read()
 
+# Regular expression matching for Lua function definitions
 function_regex = re.compile(r'''
     function\s                   # function definition
     ((?:Global)|(?:Citizen))     # type of function
@@ -35,6 +36,7 @@ matches = function_regex.findall(file_content)
 
 list_functions = {}
 
+# Adds each matched function to a dictionary
 for function in matches:
     function_type = function[0]
     function_name = function[1]
@@ -48,6 +50,7 @@ for function in matches:
             "args": tuple(function_args)
         }
 
+# Creates a snippet for each function in the dictionary
 for function_name in list_functions:
     function_type = list_functions[function_name]["type"]
     function_args = list_functions[function_name]["args"]
@@ -56,8 +59,6 @@ for function_name in list_functions:
 
     if function_type == "Citizen":
         vscode.add_snippet("Citizen." + function_name, function_args)
-
-
 
 print(json.dumps(vscode.snippets, indent=2))
 print("Done!")
