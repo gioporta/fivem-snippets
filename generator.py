@@ -71,7 +71,8 @@ for file_name, file_content in file_contents.items():
             function_type = "Default"
 
         if function_name in list_functions:
-            print("Function {0} already exists from {1}, it will not be replaced by {2}.".format(function_name, list_functions[function_name]["file"], file_name))
+            print("Function {0} already exists from {1}, it will not be replaced by {2}."
+                  .format(function_name, list_functions[function_name]["file"], file_name))
         else:
             list_functions[function_name] = {
                 "type": function_type,

@@ -10,4 +10,3 @@ CITIZEN_GLOBALS = ("Wait", "CreateThread", "SetTimeout")
 DEFAULT_INPUT_FOLDER = "input"
 
 DEFAULT_OUTPUT_FOLDER = "output"
-

@@ -26,14 +26,14 @@ def gen_file():
 
     return formatted_json
 
-def perform_formatting(json):
+def perform_formatting(json_text):
     completions_regex = re.compile(r'\"completions\":\s+\[')
     trigger_regex = re.compile(r'{\s+\"trigger\":\s\"(.+)\",\s+\"contents\":.+\s+\"(.+)\"\s+.+\s+}')
 
-    completion_sub = '\n    "completions": \n    ['
-    trigger_sub = '{ "trigger": "\g<1>", "contents": "\g<2>" }'
+    completion_sub = r'\n    "completions": \n    ['
+    trigger_sub = r'{ "trigger": "\g<1>", "contents": "\g<2>" }'
 
-    new_file = completions_regex.sub(completion_sub, json)
+    new_file = completions_regex.sub(completion_sub, json_text)
     new_file = trigger_regex.sub(trigger_sub, new_file)
 
     return new_file

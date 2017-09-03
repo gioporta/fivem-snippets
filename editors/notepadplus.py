@@ -3,7 +3,7 @@ import xml.dom.minidom as minidom
 
 snippets = []
 
-def add_snippet(name, arguments):   
+def add_snippet(name, arguments):
     snippets.append({
         "name": name,
         "params": arguments
@@ -11,7 +11,7 @@ def add_snippet(name, arguments):
 
 def gen_file():
     root = ET.Element("NotepadPlus")
-    env = ET.SubElement(root, "Environment", ignoreCase="yes", paramSeparator=",", terminal=";", additionalWordChar=".:")
+    ET.SubElement(root, "Environment", ignoreCase="yes", paramSeparator=",", terminal=";", additionalWordChar=".:")
     autocomplete = ET.SubElement(root, "AutoComplete", language="LUA")
 
     sorted_snippets = sorted(snippets, key=sort_snippet)

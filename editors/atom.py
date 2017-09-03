@@ -1,5 +1,5 @@
-import cson
 import re
+import cson
 from util import format_args
 
 scope = ".source.lua"
@@ -7,10 +7,6 @@ snippets = {}
 
 def add_snippet(name, arguments):
     arguments_formatted = format_args(arguments)
-    tab_stop_num = 1
-
-    if arguments[0] != "":
-        tab_stop_num = len(arguments) + 1
 
     snippets[name] = {
         "prefix": name,
@@ -27,7 +23,7 @@ def gen_file():
 
     return formatted_cson
 
-def perform_formatting(cson):
+def perform_formatting(cson_text):
     keys_regex = re.compile(r'( +)(\w+):')
-    keys_sub = "\g<1>'\g<2>':"
-    return keys_regex.sub(keys_sub, cson)
+    keys_sub = r"\g<1>'\g<2>':"
+    return keys_regex.sub(keys_sub, cson_text)

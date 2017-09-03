@@ -44,7 +44,7 @@ def write_file(pretty_name, file_name, content, binary):
         output_file = open(file_name_joined, 'wb')
     else:
         output_file = open(file_name_joined, 'w')
-    
+
     try:
         output_file.write(content)
     finally:
