@@ -67,13 +67,10 @@ for function_name in list_functions:
     if function_type == "Citizen":
         vscode.add_snippet("Citizen." + function_name, function_args)
 
-# Convert snippets dictionary to JSON format
-snippets_json = json.dumps(vscode.snippets, indent=2)
-
 # Open the output file and write the snippets to it
 output_file_name = "output/vscode_output.json"
 print("Writing snippets to {0}!".format(output_file_name))
 output_file = open(output_file_name, 'w')
-output_file.write(snippets_json)
+output_file.write(vscode.gen_file())
 output_file.close()
 print("Done!")
