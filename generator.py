@@ -3,9 +3,10 @@ Converts a FiveM lua reference file to VSCode snippets for autocompletion.
 """
 import re
 import json
-import vscode
 import sys
 import os
+import vscode
+import sublime
 
 # Get the functions file name from the first argument
 try:
@@ -63,14 +64,24 @@ for function_name in list_functions:
     function_args = list_functions[function_name]["args"]
 
     vscode.add_snippet(function_name, function_args)
+    sublime.add_completion(function_name, function_args)
 
     if function_type == "Citizen":
         vscode.add_snippet("Citizen." + function_name, function_args)
+        sublime.add_completion("Citizen." + function_name, function_args)
 
-# Open the output file and write the snippets to it
+# Open the VS Code output file and write the snippets to it
 output_file_name = "output/vscode_output.json"
-print("Writing snippets to {0}!".format(output_file_name))
+print("Writing VS Code snippets to {0}!".format(output_file_name))
 output_file = open(output_file_name, 'w')
 output_file.write(vscode.gen_file())
 output_file.close()
+
+# Open the Sublime Text output file and write the completions to it
+sublime_file_name = "output/sublime_output.json"
+print("Writing Sublime Text completions to {0}!".format(sublime_file_name))
+sublime_file = open(sublime_file_name, 'w')
+sublime_file.write(sublime.gen_file())
+sublime_file.close()
+
 print("Done!")
