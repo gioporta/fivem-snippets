@@ -7,6 +7,7 @@ import sys
 import os
 import vscode
 import sublime
+import atom
 
 # Get the functions file name from the first argument
 try:
@@ -65,6 +66,7 @@ for function_name in list_functions:
 
     vscode.add_snippet(function_name, function_args)
     sublime.add_completion(function_name, function_args)
+    atom.add_snippet(function_name, function_args)
 
     if function_type == "Citizen":
         vscode.add_snippet("Citizen." + function_name, function_args)
@@ -83,5 +85,12 @@ print("Writing Sublime Text completions to {0}!".format(sublime_file_name))
 sublime_file = open(sublime_file_name, 'w')
 sublime_file.write(sublime.gen_file())
 sublime_file.close()
+
+# Open the Atom output file and write the completions to it
+atom_file_name = "output/atom_output.cson"
+print("Writing Atom snippets to {0}!".format(atom_file_name))
+atom_file = open(atom_file_name, 'w')
+atom_file.write(atom.gen_file())
+atom_file.close()
 
 print("Done!")
