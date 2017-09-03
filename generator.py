@@ -4,38 +4,38 @@ Converts a FiveM lua reference file to VSCode snippets for autocompletion.
 import re
 import json
 import vscode
+import sys
+import os
 
-DATA = \
-    '''
-function Global.ThisIsAnExample(arg1, arg2)
-    return nil
-end
+# Get the file name from the first argument
+try:
+    file_name = sys.argv[1]
+except IndexError:
+    print("Please pass the file name as an argument")
+    sys.exit()
 
-function Global.CreateNewExample(oneArg)
-    return nil
-end
+# Open the given file
+try:
+    file_data = open(file_name, 'r')
+except FileNotFoundError:
+    print("The file {0} does not exist!".format(file_name))
+    sys.exit()
 
-function Global.CreateAnotherExample()
-    return nil
-end
+# Read the file into a string
+print("Reading functions from {0}".format(file_name))
+file_content = file_data.read()
 
-function Citizen.CreateTheThread(function)
-    return nil
-end
-'''
-
-FUNCTION_REGEX = re.compile(r'''
+function_regex = re.compile(r'''
     function\s                   # function definition
     ((?:Global)|(?:Citizen))     # type of function
     \.(\w+)                      # name of function
     \(((?:\w+)(?:,\s*\w+)*)?\)   # function arguments
     ''', re.VERBOSE)
-
-MATCHES = FUNCTION_REGEX.findall(DATA)
+matches = function_regex.findall(file_content)
 
 list_functions = {}
 
-for function in MATCHES:
+for function in matches:
     function_type = function[0]
     function_name = function[1]
     function_args = function[2].replace(" ", "").split(",")
@@ -57,4 +57,7 @@ for function_name in list_functions:
     if function_type == "Citizen":
         vscode.add_snippet("Citizen." + function_name, function_args)
 
+
+
 print(json.dumps(vscode.snippets, indent=2))
+print("Done!")
