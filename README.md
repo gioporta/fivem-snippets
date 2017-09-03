@@ -19,3 +19,6 @@ See the release topic on the FiveM forums for downloads and more details.
 4. Create an input folder and put your `scheduler.lua`, `natives_server.lua`, and `natives_universal.lua` inside. They can be found in your `FiveM Application Data/citizen/scripting/lua` directory.
 
 5. Run the script using `python generator.py`, optionally providing the 1st argument as the input folder and the 2nd argument as the output folder. If none are provided, it will use the default `input` and `output` folders in the current working directory.
+
+## License
+This project is licensed under the GNU General Public License V3, as viewable in the `LICENSE` file.
