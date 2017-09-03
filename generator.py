@@ -10,11 +10,16 @@ import time
 from editors import vscode, sublime, atom, notepadplus
 from util import read_file, write_file, citizenify
 
+# Notes the start time of script so it can compare at end
 start_time = time.time()
 
+# Input files names to retrieve natives
 file_names = ("scheduler.lua", "natives_server.lua", "natives_universal.lua")
+
+# Where the contents of each file will be stored
 file_contents = {}
 
+# Loop over each file and store its content in the dictionary
 for file_name in file_names:
     input_file = os.path.join(".", "input", file_name)
     try:
@@ -32,9 +37,13 @@ function_regex = re.compile(r'''
     \(((?:[\w|\.]+)(?:,\s*[\w|\.]+)*)?\) # function arguments
     ''', re.VERBOSE | re.MULTILINE)
 
+# Where every function will be stored after being parsed
 list_functions = {}
+
+# The Citizen functions that have global aliases
 citizen_globals = ("Wait", "CreateThread", "SetTimeout")
 
+# Read the files and parse the functions in them
 for file_name, file_content in file_contents.items():
     print("Reading functions from {0}".format(file_name,))
     matches = function_regex.findall(file_content)
@@ -80,5 +89,6 @@ write_file("Atom snippets", ("output", "Atom", "snippets.cson"), atom.gen_file()
 write_file("Sublime Text completions", ("output", "Sublime Text", "fivem.sublime-completions"), sublime.gen_file(), False)
 write_file("Notepad++ completions", ("output", "Notepad++", "lua.xml"), notepadplus.gen_file(), True)
 
+# Get the script's execution time and print it
 execution_time = time.time() - start_time
 print("Completed script execution in {0:06.3f} seconds.".format(execution_time,))

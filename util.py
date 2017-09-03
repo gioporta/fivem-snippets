@@ -1,3 +1,6 @@
+"""
+Various miscellaneous utilities for the FiveM snippets generator
+"""
 import os
 
 def format_args(arguments):
