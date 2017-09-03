@@ -1,5 +1,7 @@
 """
-Converts a FiveM lua reference file to VSCode snippets for autocompletion.
+FiveM Snippets by Giovanni Porta (github.com/gioporta)
+
+Converts FiveM Lua reference files to snippets and completions for several code editors.
 """
 import re
 import json
