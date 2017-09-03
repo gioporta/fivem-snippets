@@ -14,15 +14,17 @@ def format_args(arguments):
 
 def read_file(file_name):
     try:
-        print("Reading functions from {0}".format(file_name))
+        print("Reading file {0}".format(file_name))
 
         functions_file = open(file_name, 'r')
-        file_content = functions_file.read()
+        try:
+            file_content = functions_file.read()
+        finally:
+            functions_file.close()
 
         return file_content
-    finally:
-        print("Function reading complete, closing file.")
-        functions_file.close()
+    except FileNotFoundError:
+        raise
 
 def write_file(pretty_name, file_name, content):
     try:
@@ -30,5 +32,4 @@ def write_file(pretty_name, file_name, content):
         output_file = open(file_name, 'w')
         output_file.write(content)
     finally:
-        print("File writing complete, closing file.")
         output_file.close()

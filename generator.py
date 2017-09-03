@@ -13,19 +13,16 @@ from util import read_file, write_file
 
 start_time = time.time()
 
-# Get the functions file name from the first argument
-try:
-    functions_file_name = sys.argv[1]
-except IndexError:
-    print("Please pass the function file name as an argument")
-    sys.exit()
+file_names = ("scheduler.lua", "natives_server.lua", "natives_universal.lua")
+file_contents = {}
 
-# Read the functions file
-try:
-    functions_file_content = read_file(functions_file_name)
-except FileNotFoundError:
-    print("The file {0} does not exist!".format(functions_file_name))
-    sys.exit()
+for file_name in file_names:
+    input_file = os.path.join(".", "input", file_name)
+    try:
+        file_contents[file_name] = read_file(input_file)
+    except FileNotFoundError:
+        print("The file {0} does not exist! Ensure that you have an input folder with all your FiveM native files.".format(input_file))
+        sys.exit()
 
 # Regular expression matching for Lua function definitions
 function_regex = re.compile(r'''
@@ -35,26 +32,30 @@ function_regex = re.compile(r'''
     \.?(\w+)                             # name of function
     \(((?:[\w|\.]+)(?:,\s*[\w|\.]+)*)?\) # function arguments
     ''', re.VERBOSE | re.MULTILINE)
-matches = function_regex.findall(functions_file_content)
 
 list_functions = {}
 
-# Adds each matched function to a dictionary
-for function in matches:
-    function_type = function[0]
-    function_name = function[1]
-    function_args = function[2].replace(" ", "").split(",")
+for file_name, file_content in file_contents.items():
+    print("Reading functions from {0}".format(file_name,))
+    matches = function_regex.findall(file_content)
 
-    if not function_type:
-        function_type = "Default"
+    # Adds each matched function to a dictionary
+    for function in matches:
+        function_type = function[0]
+        function_name = function[1]
+        function_args = function[2].replace(" ", "").split(",")
 
-    if function_name in list_functions:
-        print("Function {0} already exists, it will not be replaced.".format(function_name))
-    else:
-        list_functions[function_name] = {
-            "type": function_type,
-            "args": tuple(function_args)
-        }
+        if not function_type:
+            function_type = "Default"
+
+        if function_name in list_functions:
+            print("Function {0} already exists from {1}, it will not be replaced by {2}.".format(function_name, list_functions[function_name]["file"], file_name))
+        else:
+            list_functions[function_name] = {
+                "type": function_type,
+                "args": tuple(function_args),
+                "file": file_name
+            }
 
 # Creates a snippet for each function in the dictionary
 for function_name in list_functions:
