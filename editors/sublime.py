@@ -2,7 +2,7 @@ import json
 import re
 from util import format_args
 
-scope = "source.lua"
+scope = "source.lua, source.luae"
 completions = []
 
 def add_completion(name, arguments):
