@@ -30,11 +30,11 @@ functions_file.close()
 
 # Regular expression matching for Lua function definitions
 function_regex = re.compile(r'''
-    ^(?:\t+)?                    # any tabs or spaces
-    function\s                   # function definition
-    ((?:Global)|(?:Citizen))?    # type of function
-    \.?(\w+)                     # name of function
-    \(((?:\w+)(?:,\s*\w+)*)?\)   # function arguments
+    ^(?:\t+)?                            # any tabs or spaces
+    function\s                           # function definition
+    ((?:Global)|(?:Citizen))?            # type of function
+    \.?(\w+)                             # name of function
+    \(((?:[\w|\.]+)(?:,\s*[\w|\.]+)*)?\) # function arguments
     ''', re.VERBOSE | re.MULTILINE)
 matches = function_regex.findall(functions_file_content)
 
