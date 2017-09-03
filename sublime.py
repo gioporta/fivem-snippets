@@ -11,7 +11,7 @@ def add_completion(name, arguments):
     completions.append({
         "trigger": name,
         "contents": [
-            "{0}({1})$0".format(name, arguments_formatted)
+            "{0}({1})".format(name, arguments_formatted)
         ]
     })
 

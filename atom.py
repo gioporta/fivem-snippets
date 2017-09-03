@@ -14,7 +14,7 @@ def add_snippet(name, arguments):
 
     snippets[name] = {
         "prefix": name,
-        "body": "{0}({1})${2}".format(name, arguments_formatted, tab_stop_num)
+        "body": "{0}({1})".format(name, arguments_formatted)
     }
 
 def gen_file():
