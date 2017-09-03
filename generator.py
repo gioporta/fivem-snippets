@@ -7,10 +7,8 @@ import re
 import json
 import sys
 import os
-import vscode
-import sublime
-import atom
 import time
+from editors import vscode, sublime, atom
 from util import read_file, write_file, citizenify
 
 start_time = time.time()
