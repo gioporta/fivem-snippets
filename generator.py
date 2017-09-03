@@ -22,6 +22,7 @@ print("Starting snippet generator with input folder '{0}' and output folder '{1}
 # Where the contents of each file will be stored
 file_contents = {}
 
+# Input files that don't exist
 files_not_existing = []
 
 # Loop over each file and store its content in the dictionary
@@ -36,9 +37,11 @@ for file_name in config.NATIVE_FILE_NAMES:
 # If any of the files do not exist, tell the user and exit the script
 if len(files_not_existing) >= 1:
     print("The following input files do not exist:")
+
     for file in files_not_existing:
         print("\t{0}".format(file))
     print("Ensure that all the input files are in the input folder.")
+
     sys.exit()
 
 # Regular expression matching for Lua function definitions
