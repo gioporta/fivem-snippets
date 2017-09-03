@@ -7,7 +7,7 @@ import re
 import sys
 import os
 import time
-from editors import vscode, sublime, atom
+from editors import vscode, sublime, atom, notepadplus
 from util import read_file, write_file, citizenify
 
 start_time = time.time()
@@ -66,16 +66,19 @@ for function_name in list_functions:
         vscode.add_snippet(function_name, function_args)
         atom.add_snippet(function_name, function_args)
         sublime.add_completion(function_name, function_args)
+        notepadplus.add_snippet(function_name, function_args)
 
     if function_type == "Citizen":
         vscode.add_snippet(citizenify(function_name), function_args)
         atom.add_snippet(citizenify(function_name), function_args)
         sublime.add_completion(citizenify(function_name), function_args)
+        notepadplus.add_snippet(citizenify(function_name), function_args)
 
 # Write the completed snippets & completions to respective files
-write_file("VS Code snippets", "output/vscode_output.json", vscode.gen_file())
-write_file("Atom snippets", "output/atom_output.cson", atom.gen_file())
-write_file("Sublime Text completions", "output/sublime_output.json", sublime.gen_file())
+write_file("VS Code snippets", "output/vscode_output.json", vscode.gen_file(), False)
+write_file("Atom snippets", "output/atom_output.cson", atom.gen_file(), False)
+write_file("Sublime Text completions", "output/sublime_output.json", sublime.gen_file(), False)
+write_file("Notepad++ completions", "output/notepadplus_output.xml", notepadplus.gen_file(), True)
 
 execution_time = time.time() - start_time
 print("Completed script execution in {0:06.3f} seconds.".format(execution_time,))

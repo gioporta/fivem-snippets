@@ -26,10 +26,13 @@ def read_file(file_name):
     except FileNotFoundError:
         raise
 
-def write_file(pretty_name, file_name, content):
+def write_file(pretty_name, file_name, content, binary):
     try:
         print("Writing {0} to {1}!".format(pretty_name, file_name))
-        output_file = open(file_name, 'w')
+        if binary:
+            output_file = open(file_name, 'wb')
+        else:
+            output_file = open(file_name, 'w')
         output_file.write(content)
     finally:
         output_file.close()
