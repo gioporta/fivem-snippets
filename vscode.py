@@ -9,9 +9,9 @@ def add_snippet(name, arguments):
     snippets[name] = {
         "prefix": name,
         "body": [
-            "{0}({1})".format(name, arguments_formatted)
+            "{0}({1})$0".format(name, arguments_formatted)
         ]
     }
 
 def gen_file():
-    return json.dumps(snippets, indent=2)
+    return json.dumps(snippets, indent=4)
