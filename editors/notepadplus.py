@@ -14,7 +14,9 @@ def gen_file():
     env = ET.SubElement(root, "Environment", ignoreCase="yes", paramSeparator=",", terminal=";", additionalWordChar=".:")
     autocomplete = ET.SubElement(root, "AutoComplete", language="LUA")
 
-    for keyword in snippets:
+    sorted_snippets = sorted(snippets, key=sort_snippet)
+
+    for keyword in sorted_snippets:
         func_keyword = ET.SubElement(autocomplete, "KeyWord", name=keyword["name"], func="yes")
         func_overload = ET.SubElement(func_keyword, "Overload", retVal="")
 
@@ -26,3 +28,6 @@ def gen_file():
     reparsed_result = minidom.parseString(rough_result)
 
     return reparsed_result.toprettyxml(indent="  ", encoding="Windows-1252")
+
+def sort_snippet(snippet):
+    return str.lower(snippet["name"])
