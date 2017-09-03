@@ -8,6 +8,10 @@ import os
 import vscode
 import sublime
 import atom
+import time
+from util import read_file, write_file
+
+start_time = time.time()
 
 # Get the functions file name from the first argument
 try:
@@ -16,19 +20,12 @@ except IndexError:
     print("Please pass the function file name as an argument")
     sys.exit()
 
-# Open the functions file
+# Read the functions file
 try:
-    functions_file = open(functions_file_name, 'r')
+    functions_file_content = read_file(functions_file_name)
 except FileNotFoundError:
     print("The file {0} does not exist!".format(functions_file_name))
     sys.exit()
-
-# Read the functions file into a string
-print("Reading functions from {0}".format(functions_file_name))
-functions_file_content = functions_file.read()
-
-# Close the functions file after reading
-functions_file.close()
 
 # Regular expression matching for Lua function definitions
 function_regex = re.compile(r'''
@@ -65,32 +62,17 @@ for function_name in list_functions:
     function_args = list_functions[function_name]["args"]
 
     vscode.add_snippet(function_name, function_args)
-    sublime.add_completion(function_name, function_args)
     atom.add_snippet(function_name, function_args)
+    sublime.add_completion(function_name, function_args)
 
     if function_type == "Citizen":
         vscode.add_snippet("Citizen." + function_name, function_args)
         sublime.add_completion("Citizen." + function_name, function_args)
 
-# Open the VS Code output file and write the snippets to it
-output_file_name = "output/vscode_output.json"
-print("Writing VS Code snippets to {0}!".format(output_file_name))
-output_file = open(output_file_name, 'w')
-output_file.write(vscode.gen_file())
-output_file.close()
+# Write the completed snippets & completions to respective files
+write_file("VS Code snippets", "output/vscode_output.json", vscode.gen_file())
+write_file("Atom snippets", "output/atom_output.cson", atom.gen_file())
+write_file("Sublime Text completions", "output/sublime_output.json", sublime.gen_file())
 
-# Open the Sublime Text output file and write the completions to it
-sublime_file_name = "output/sublime_output.json"
-print("Writing Sublime Text completions to {0}!".format(sublime_file_name))
-sublime_file = open(sublime_file_name, 'w')
-sublime_file.write(sublime.gen_file())
-sublime_file.close()
-
-# Open the Atom output file and write the completions to it
-atom_file_name = "output/atom_output.cson"
-print("Writing Atom snippets to {0}!".format(atom_file_name))
-atom_file = open(atom_file_name, 'w')
-atom_file.write(atom.gen_file())
-atom_file.close()
-
-print("Done!")
+execution_time = time.time() - start_time
+print("Completed script execution in {0:06.3f} seconds.".format(execution_time,))
