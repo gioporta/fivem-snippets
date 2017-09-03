@@ -30,11 +30,12 @@ functions_file.close()
 
 # Regular expression matching for Lua function definitions
 function_regex = re.compile(r'''
+    ^(?:\t+)?                    # any tabs or spaces
     function\s                   # function definition
-    ((?:Global)|(?:Citizen))     # type of function
-    \.(\w+)                      # name of function
+    ((?:Global)|(?:Citizen))?    # type of function
+    \.?(\w+)                     # name of function
     \(((?:\w+)(?:,\s*\w+)*)?\)   # function arguments
-    ''', re.VERBOSE)
+    ''', re.VERBOSE | re.MULTILINE)
 matches = function_regex.findall(functions_file_content)
 
 list_functions = {}
@@ -44,6 +45,9 @@ for function in matches:
     function_type = function[0]
     function_name = function[1]
     function_args = function[2].replace(" ", "").split(",")
+
+    if not function_type:
+        function_type = "Default"
 
     if function_name in list_functions:
         print("Function {0} already exists, it will not be replaced.".format(function_name))
