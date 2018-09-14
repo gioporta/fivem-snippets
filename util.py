@@ -21,7 +21,7 @@ def read_file(file_name):
     try:
         print("Reading file {0}".format(file_name))
 
-        functions_file = open(file_name, 'r')
+        functions_file = open(file_name, 'r', encoding="utf8")
         try:
             file_content = functions_file.read()
         finally:
